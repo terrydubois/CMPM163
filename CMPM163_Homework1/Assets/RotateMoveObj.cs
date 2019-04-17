@@ -6,8 +6,10 @@ public class RotateMoveObj : MonoBehaviour
 {
     public bool rotate;
     public float rotateSpeed = 10f;
-    public bool move;
-    public float moveSpeed = 10f;
+    public bool moveX;
+    public bool moveY;
+    public bool moveZ;
+    public float moveSpeed = 0.1f;
 
     void Start()
     {
@@ -20,11 +22,24 @@ public class RotateMoveObj : MonoBehaviour
             transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
         }
 
-        if (move) {
+        float moveSpeedX = 0;
+        float moveSpeedY = 0;
+        float moveSpeedZ = 0;
+        if (moveX) {
+            moveSpeedX = moveSpeed;
+        }
+        if (moveY) {
+            moveSpeedY = moveSpeed;
+        }
+        if (moveZ) {
+            moveSpeedZ = moveSpeed;
+        }
+
+        if (moveX || moveY || moveZ) {
             transform.position = new Vector3(
-                transform.position.x + moveSpeed,
-                transform.position.y,
-                transform.position.z
+                transform.position.x + moveSpeedX,
+                transform.position.y + moveSpeedY,
+                transform.position.z + moveSpeedZ
                 );
         }
     }
