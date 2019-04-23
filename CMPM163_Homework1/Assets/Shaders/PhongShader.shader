@@ -13,7 +13,7 @@ Shader "Custom/Phong"
     {
         Pass {
             Tags { "LightMode" = "ForwardAdd" } //Important! In Unity, point lights are calculated in the the ForwardAdd pass
-            // Blend One One //Turn on additive blending if you have more than one point light
+            //Blend One One //Turn on additive blending if you have more than one point light
           
             
             CGPROGRAM
