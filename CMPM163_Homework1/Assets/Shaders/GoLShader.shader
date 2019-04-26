@@ -73,30 +73,33 @@
                 arr[7] = tex2D(  _MainTex, float2( left , up ));   //NW
 
                 int cnt = 0;
-                for(int i=0;i<8;i++){
-                    if (arr[i].r > 0.5) {
+                for (int i = 0; i < 8; i++) {
+                    if (arr[i].r > 0.5 && arr[i].g > 0.5) {
                         cnt++;
                     }
                 }
                         
-                if (C.r >= 0.5) { //cell is alive
+                if (C.r >= 0.5 && C.g >= 0.5) { //cell is alive
                     if (cnt == 2 || cnt == 3) {
                         //Any live cell with two or three live neighbours lives on to the next generation.
                 
-                        return float4(1.0,1.0,1.0,1.0);
-                    } else {
+                        return float4(1.0, 1.0, 0.0, 1.0);
+                    }
+                    else {
                         //Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
                         //Any live cell with more than three live neighbours dies, as if by overpopulation.
 
-                        return float4(0.0,0.0,0.0,1.0);
+                        return float4(0.0, 0.0, 1.0, 1.0);
                     }
-                } else { //cell is dead
+                }
+                else { //cell is dead
                     if (cnt == 3) {
                         //Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
-                        return float4(1.0,1.0,1.0,1.0);
-                    } else {
-                        return float4(0.0,0.0,0.0,1.0);
+                        return float4(1.0, 1.0, 1.0, 1.0);
+                    }
+                    else {
+                        return float4(0.0, 0.0, 1.0, 1.0);
 
                     }
                 }

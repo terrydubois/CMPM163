@@ -43,7 +43,7 @@
 			{
 
 				float4 c = tex2D(_MainTex, i.uv);
-                return float4(1.0 -c.r, 1.0-c.r, 1.0-c.r, 1.0);
+                return float4(c.r, c.g, c.b, c.a);
 			}
 			
 			ENDCG
