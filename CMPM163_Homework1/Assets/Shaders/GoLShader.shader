@@ -12,8 +12,9 @@
 		
 		Pass
 		{
-            // decalre vertex and fragment functions
+            // program written in CG language
 			CGPROGRAM
+            // decalre vertex and fragment functions
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -130,6 +131,7 @@
                 
             }
 
+            // done writing in CG
 			ENDCG
 		}
 
