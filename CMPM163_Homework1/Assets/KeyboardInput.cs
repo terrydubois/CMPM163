@@ -18,14 +18,18 @@ public class KeyboardInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // if player is pressing UP or DOWN, change playerInput variable accordingly
         if (Input.GetKey(KeyCode.UpArrow)) {
             playerInput += 0.3f;
         }
         else if (Input.GetKey(KeyCode.DownArrow)) {
             playerInput -= 0.3f;
         }
+
+        // keep playerInput between 0 and 60
         playerInput = Mathf.Clamp(playerInput, 0, 60);
 
+        // send playerInput to our blur material to change the steps of blur
         render.material.SetFloat("_Steps", playerInput);
         Debug.Log(playerInput);
     }
