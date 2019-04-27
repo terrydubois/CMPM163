@@ -2,6 +2,7 @@
 {
     Properties
     {
+        // declare texture and steps variable (amount of blur steps)
         _MainTex ("Texture", 2D) = "white" {}
         _Steps ("Steps", Float) = 3
         

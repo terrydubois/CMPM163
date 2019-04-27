@@ -646,7 +646,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Assignment 1, PART B
 
-    Hold the up arrow or the down arrow to change the intensity of the blur shader!'
+    Hold the UP Arrow or the DOWN Arrow to change the intensity of the blur shader!'
 --- !u!222 &1478267075
 CanvasRenderer:
   m_ObjectHideFlags: 0
