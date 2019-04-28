@@ -12,6 +12,8 @@
         
         Pass
         {
+            // tell unity we are using Cg and the names of our
+            // vertex and fragment shaders
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -21,7 +23,7 @@
             uniform float4 _MainTex_TexelSize; //special value
             uniform float _Steps;
             
-            // declare type "appdata" to take in data from unity
+            // declare type "appdata" to take in data from Unity
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -47,7 +49,7 @@
 
             sampler2D _MainTex;
 
-            // function to return blurre texel
+            // function to return blurred texel
             fixed4 frag (v2f i) : SV_Target
             {
                 // define texel as float2 with our TexelSize XY values

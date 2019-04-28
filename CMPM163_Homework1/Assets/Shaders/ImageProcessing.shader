@@ -1,4 +1,4 @@
-﻿Shader "Custom/ImageProcessingShader"
+﻿Shader "Custom/ImageProcessing"
 {
     Properties
     {
