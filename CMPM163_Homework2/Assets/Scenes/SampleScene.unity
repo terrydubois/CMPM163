@@ -179,7 +179,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &534669902
 GameObject:
@@ -272,7 +272,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100002, guid: 7379ec50282d3424096f1ba5b2a19820, type: 3}
       propertyPath: m_Name
-      value: tinker
+      value: Car
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 7379ec50282d3424096f1ba5b2a19820, type: 3}
       propertyPath: m_LocalPosition.x
@@ -304,7 +304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 7379ec50282d3424096f1ba5b2a19820, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 7379ec50282d3424096f1ba5b2a19820, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -318,5 +318,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 7379ec50282d3424096f1ba5b2a19820, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1e5d5b4210ae5a14c9c15a94c876b4fe, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7379ec50282d3424096f1ba5b2a19820, type: 3}
