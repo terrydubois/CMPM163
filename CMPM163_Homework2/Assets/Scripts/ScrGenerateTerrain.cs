@@ -9,11 +9,11 @@ using UnityEngine;
 public class ScrGenerateTerrain : MonoBehaviour
 {
 
+    public int heightScale = 10;
+    public float detailScale = 20.0f;
+
     void Start()
     {
-        int heightScale = 10;
-        float detailScale = 20.0f;
-        
         Mesh mesh = this.GetComponent<MeshFilter>().mesh;
         Vector3[] verts = mesh.vertices;
         for (int i = 0; i < verts.Length; i++) {
