@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ScrSpin : MonoBehaviour
 {
-
-    public float spinSpeed = 10f;
+    public float spinSpeedX = 10f;
+    public float spinSpeedY = 10f;
+    public float spinSpeedZ = 10f;
 
     void Start()
     {
@@ -14,6 +15,9 @@ public class ScrSpin : MonoBehaviour
 
     void Update()
     {
-        transform.Rotate(0, 0,  Time.deltaTime * spinSpeed, Space.Self);
+        transform.Rotate(Time.deltaTime * spinSpeedX,
+                        Time.deltaTime * spinSpeedY, 
+                        Time.deltaTime * spinSpeedZ,
+                        Space.Self);
     }
 }
