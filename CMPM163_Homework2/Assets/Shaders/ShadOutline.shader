@@ -3,6 +3,7 @@
     Properties
     {
         _Outline("Outline", Float) = 0
+        _OutlineColor("OutlineColor", Vector) = (0, 0.5, 1, 1)
     }
     SubShader
     {
@@ -18,6 +19,7 @@
             #include "UnityCG.cginc"
 
             float _Outline;
+            float4 _OutlineColor;
             
             struct appdata
             {
@@ -49,7 +51,7 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 float4 c = tex2D(_MainTex, i.uv);
-                return float4(0, 0.5, 1, 1); // RGBA color of outline
+                return _OutlineColor;//float4(0, 0.5, 1, 1); // RGBA color of outline
             }
             
 
