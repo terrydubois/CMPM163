@@ -22,9 +22,9 @@ public class ScrGenerateInfinite : MonoBehaviour
     public GameObject plane;
     public GameObject player;
 
-    int planeSize = 10;
-    int halfTilesX = 20;
-    int halfTilesZ = 20;
+    public int planeSize = 12;
+    public int halfTilesX = 20;
+    public int halfTilesZ = 20;
 
     Vector3 startPos;
     Hashtable tiles = new Hashtable();
