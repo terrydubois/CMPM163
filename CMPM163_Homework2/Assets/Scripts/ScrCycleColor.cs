@@ -29,7 +29,7 @@ public class ScrCycleColor : MonoBehaviour
     void Start()
     {
         renderOutline = GetComponent<Renderer>();
-        renderOutline.material.shader = Shader.Find("Custom/ShadOutline");
+        renderOutline.material.shader = Shader.Find("Custom/ShadOutlineAndPhong");
         renderGround = groundPlane.GetComponent<Renderer>();
         renderGround.material.shader = Shader.Find("Custom/ShadTronGround");
 
