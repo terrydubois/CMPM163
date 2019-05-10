@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class ScrCycleColor : MonoBehaviour
 {
-    Renderer render;
+    Renderer renderOutline;
+    Renderer renderGround;
+
+    public GameObject groundPlane;
+
     public float colorR;
     public float colorG;
     public float colorB;
@@ -24,9 +28,12 @@ public class ScrCycleColor : MonoBehaviour
 
     void Start()
     {
-        render = GetComponent<Renderer>();
-        render.material.shader = Shader.Find("Custom/Outline");
-        colorR = 1;
+        renderOutline = GetComponent<Renderer>();
+        renderOutline.material.shader = Shader.Find("Custom/ShadOutline");
+        renderGround = groundPlane.GetComponent<Renderer>();
+        renderGround.material.shader = Shader.Find("Custom/ShadTronGround");
+
+        colorR = 0;
         colorG = 1;
         colorB = 1;
     }
@@ -34,6 +41,7 @@ public class ScrCycleColor : MonoBehaviour
     void Update()
     {
         Vector4 newColor = new Vector4(colorR, colorG, colorB, 1);
-        render.material.SetVector("_OutlineColor", newColor);
+        renderOutline.material.SetVector("_OutlineColor", newColor);
+        renderGround.material.SetVector("_Color", newColor);
     }
 }
