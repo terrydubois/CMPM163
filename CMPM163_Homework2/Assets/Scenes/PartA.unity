@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BloomShader: {fileID: 4800000, guid: 6a958f9fe085f6d498bf34d9101b1115, type: 3}
-  BloomFactor: 9.9
+  BloomFactor: 5
 --- !u!1 &539965331 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100002, guid: 7379ec50282d3424096f1ba5b2a19820,
@@ -1966,7 +1966,7 @@ GameObject:
   - component: {fileID: 2105117984}
   - component: {fileID: 2105117983}
   m_Layer: 0
-  m_Name: Point Light (1)
+  m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2018,7 +2018,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2105117982}
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 5.2, z: 0}
+  m_LocalPosition: {x: 0, y: -9.46, z: 7.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 539965333}
