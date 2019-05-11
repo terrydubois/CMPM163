@@ -26,6 +26,8 @@ public class ScrGenerateInfinite : MonoBehaviour
     public int halfTilesX = 20;
     public int halfTilesZ = 20;
 
+    public float tilesY = 0;
+
     Vector3 startPos;
     Hashtable tiles = new Hashtable();
 
@@ -40,7 +42,7 @@ public class ScrGenerateInfinite : MonoBehaviour
             for (int z = -halfTilesZ; z < halfTilesZ; z++) {
                 
                 Vector3 pos = new Vector3((x * planeSize + startPos.x),
-                                            0,
+                                            tilesY,
                                             (z * planeSize + startPos.z));
                 GameObject t = (GameObject) Instantiate(plane, pos, Quaternion.identity);
 
