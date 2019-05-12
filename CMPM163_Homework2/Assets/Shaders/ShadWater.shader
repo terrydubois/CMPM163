@@ -36,6 +36,9 @@
             ZWrite Off
 
 			CGPROGRAM
+
+            #define SMOOTHSTEP_AA 0.01 // for smoothing the cutoff
+
             #pragma vertex vert
             #pragma fragment frag
 
@@ -133,7 +136,7 @@
                 float2 noiseUV = float2((i.noiseUV.x + _Time.y * _SurfaceNoiseScroll.x) + distortSample.x,
                                         (i.noiseUV.y + _Time.y * _SurfaceNoiseScroll.y) + distortSample.y);
                 float surfaceNoiseSample = tex2D(_SurfaceNoise, noiseUV).r;
-                float surfaceNoise = surfaceNoiseSample > surfaceNoiseCutoff ? 1 : 0;
+                float surfaceNoise = smoothstep(_SurfaceNoiseCutoff - SMOOTHSTEP_AA, surfaceNoiseCutoff + SMOOTHSTEP_AA, surfaceNoiseSample); // smooth out cutoff at very end of toon-water shader
 
 
 
