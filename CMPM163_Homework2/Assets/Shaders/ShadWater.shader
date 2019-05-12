@@ -21,6 +21,8 @@
 
         _SurfaceDistortion("Surface Distortion", 2D) = "white" {}
         _SurfaceDistortionAmount("Surface Distortion Amount", Range(0, 1)) = 0.27
+
+        _WaterAlpha("Water Alpha", Float) = 1.0
     }
     SubShader
     {
@@ -111,6 +113,8 @@
             // for reflect shader
             samplerCUBE _Cube;
 
+            float _WaterAlpha;
+
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -171,7 +175,7 @@
                 // and then lerp them, so we get some of both
                 float4 reflectFinal = float4(lerp(reflectColor, refractColor, 0.5).rgb, 1.0);
                 float4 toonFinal = waterColor + surfaceNoise;
-                return float4(lerp(reflectFinal, toonFinal, 0.4).rgb, 1.0);
+                return float4(lerp(reflectFinal, toonFinal, 0.4).rgb, _WaterAlpha);
 
             }
             ENDCG

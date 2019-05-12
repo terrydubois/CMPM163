@@ -11,6 +11,7 @@ public class ScrWaterSliders : MonoBehaviour
     public float waterOriginalY;
     public float waterPlusY;
     public float depthMaxDist;
+    public float waterAlpha;
 
     public void sliderChangedFoamAmount(float newVal)
     {
@@ -27,6 +28,11 @@ public class ScrWaterSliders : MonoBehaviour
         depthMaxDist = newVal;
     }
 
+    public void sliderChangedWaterAlpha(float newVal)
+    {
+        waterAlpha = newVal;
+    }
+
     void Start()
     {
         // get water shader
@@ -37,6 +43,7 @@ public class ScrWaterSliders : MonoBehaviour
         foamAmount = 0.75f;
         waterPlusY = 9.0f;
         depthMaxDist = 7.5f;
+        waterAlpha = 1.0f;
     }
 
     void Update()
@@ -47,5 +54,6 @@ public class ScrWaterSliders : MonoBehaviour
                                                     waterOriginalY + waterPlusY,
                                                     waterPlane.transform.position.z);
         renderWater.material.SetFloat("_DepthMaxDistance", depthMaxDist);
+        renderWater.material.SetFloat("_WaterAlpha", waterAlpha);
     }
 }

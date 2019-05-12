@@ -88,6 +88,7 @@ Material:
     - _SurfaceDistortionAmount: 0.409
     - _SurfaceNoiseCutoff: 0.724
     - _UVSec: 0
+    - _WaterAlpha: 1
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
