@@ -1,10 +1,14 @@
 ﻿Shader "Custom/ShadWater"
 {
+    // TOON-WATER SHADER TUTORIAL: https://roystan.net/articles/toon-water.html
+
     Properties
     {
+        // for reflect shader
         _Cube ("Cubemap", CUBE) = "" {}
 
 
+        // for toon-water shader
         _DepthGradientShallow("Depth Gradient Shallow", Color)	 = (0.325, 0.807, 0.971, 0.725)
         _DepthGradientDeep("Depth Gradient Deep", Color) = (0.086, 0.407, 1, 0.749)
         _DepthMaxDistance("Depth Maximum Distance", Float) = 1
@@ -20,6 +24,7 @@
     }
     SubShader
     {
+        // needed for transparency in water
         Tags
         {
             "Queue" = "Transparent"
@@ -36,8 +41,6 @@
 
             #include "UnityCG.cginc"
 
-            /// TRANSPARENCY PROPERTY & TAG
-
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -47,14 +50,14 @@
 
             struct v2f
             {
-                // toon shader
+                // for toon-water shader
                 float4 vertex : SV_POSITION;
                 float4 screenPosition : TEXCOORD2;
                 float2 noiseUV : TEXCOORD0;
                 float2 distortUV : TEXCOORD1;
                 float3 viewNormal : NORMAL0;
 
-                // reflect shader
+                // for reflect shader
                 float3 normalInWorldCoords : NORMAL1;
                 float3 vertexInWorldCoords : TEXCOORD3;
             };
@@ -69,7 +72,7 @@
             {
                 v2f o;
 
-                // for toon shader
+                // for toon-water shader
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.screenPosition = ComputeScreenPos(o.vertex);
                 o.noiseUV = TRANSFORM_TEX(v.uv, _SurfaceNoise);
@@ -86,7 +89,7 @@
 
 
 
-            // for toon shader
+            // for toon-water shader
             float4 _DepthGradientShallow;
             float4 _DepthGradientDeep;
 
@@ -109,7 +112,7 @@
             fixed4 frag (v2f i) : SV_Target
             {
 
-                // for toon shader
+                // for toon-water shader
                 float existingDepth01 = tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.screenPosition)).r;
                 float existingDepthLinear = LinearEyeDepth(existingDepth01);
 
@@ -138,21 +141,18 @@
                 // for reflect shader
                 float3 P = i.vertexInWorldCoords.xyz;
                 
-                //get normalized incident ray (from camera to vertex)
+                // get normalized incident ray (from camera to vertex)
                 float3 vIncident = normalize(P - _WorldSpaceCameraPos);
                 
-                //reflect that ray around the normal using built-in HLSL command
+                // reflect that ray around the normal using built-in HLSL command
                 float3 vReflect = reflect( vIncident, i.normalInWorldCoords );
                 
                 
-                //use the reflect ray to sample the skybox
+                // use the reflect ray to sample the skybox
                 float4 reflectColor = texCUBE( _Cube, vReflect );
                 
-                //refract the incident ray through the surface using built-in HLSL command
+                // refract the incident ray through the surface using built-in HLSL command
                 float3 vRefract = refract( vIncident, i.normalInWorldCoords, 0.5 );
-                
-                //float4 refractColor = texCUBE( _Cube, vRefract );
-                
                 
                 float3 vRefractRed = refract( vIncident, i.normalInWorldCoords, 0.1 );
                 float3 vRefractGreen = refract( vIncident, i.normalInWorldCoords, 0.1 );
@@ -164,21 +164,15 @@
                 float4 refractColor = float4(refractColorRed.r, refractColorGreen.g, refractColorBlue.b, 1.0);
                 
                 
+                // get final result from reflection shader and toon-water shader
+                // and then lerp them, so we get some of both
                 float4 reflectFinal = float4(lerp(reflectColor, refractColor, 0.5).rgb, 1.0);
                 float4 toonFinal = waterColor + surfaceNoise;
-
                 return float4(lerp(reflectFinal, toonFinal, 0.4).rgb, 1.0);
 
             }
             ENDCG
         }
-
-
-
-        
-
-
-
 
     }
 }

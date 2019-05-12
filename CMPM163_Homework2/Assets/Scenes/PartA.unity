@@ -1012,6 +1012,7 @@ MonoBehaviour:
   planeSize: 11
   halfTilesX: 10
   halfTilesZ: 10
+  tilesY: 0
 --- !u!4 &915581526
 Transform:
   m_ObjectHideFlags: 0

@@ -23,6 +23,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Cube:
+        m_Texture: {fileID: 8900000, guid: ee3f576a52fec4344b69f2f8be177efc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -61,12 +65,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SurfaceNoise:
         m_Texture: {fileID: 2800000, guid: dc4973e739a332b4a89ff7545a20b718, type: 3}
-        m_Scale: {x: 1, y: 4}
+        m_Scale: {x: 4, y: 4}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _DepthMaxDistance: 1
+    - _DepthMaxDistance: 28.13
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _FoamMaxDistance: 0.4
@@ -81,8 +85,8 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _SurfaceDistortionAmount: 0.27
-    - _SurfaceNoiseCutoff: 0.777
+    - _SurfaceDistortionAmount: 0.409
+    - _SurfaceNoiseCutoff: 0.724
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
