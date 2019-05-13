@@ -1,4 +1,6 @@
-﻿Shader "Custom/ShadBloom"
+﻿// This comes from the Bloom shader made in CMPM163 section
+
+Shader "Custom/ShadBloom"
 {
     Properties
     {
@@ -46,23 +48,23 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 float3 col = tex2D( _MainTex, i.uv).rgb;
-                //Find Luminance
-                float brightness = dot(col, float3(0.2126, 0.7152, 0.0722));
+                // get luminance
+                float brightness = dot(col, float3(0.2126, 0.7152, 0.0722)); // values are chosen based on strength of color channels in human eye cones
 
+                // if luminance is greater than our threshold, return color with full alpha,
+                // else return black
                 if (brightness > 1.0) {
                     return float4(col, 1.0);
                 }
                 else {
                     return float4(0, 0, 0, 1);
                 }
-             
-                //return float4(col, 1.0) if Luminance > some threshold else return black
                 
             }
             ENDCG
         }
         
-        // Blur pass - This is a box blur which affect the performance. Try implementing an efficent blur 
+        // Blur pass - This is a box blur which affect the performance
         Pass
         {
             CGPROGRAM
@@ -111,20 +113,21 @@
                 int steps = ((int)_Steps) * 2 + 1;
                 if (steps < 0) {
                     avg = tex2D( _MainTex, i.uv).rgb;
-                } else {
-        
-                int x, y;
-        
-                for ( x = -steps/2; x <=steps/2 ; x++) {
-                    for (int y = -steps/2; y <= steps/2; y++) {
-                        avg += tex2D( _MainTex, i.uv + texel * float2( x, y ) ).rgb;
-                    }
                 }
+                else {
+                    int x, y;
+            
+                    // average out near pixels for blurring effect
+                    for ( x = -steps/2; x <=steps/2 ; x++) {
+                        for (int y = -steps/2; y <= steps/2; y++) {
+                            avg += tex2D( _MainTex, i.uv + texel * float2( x, y ) ).rgb;
+                        }
+                    }
+            
+                    avg /= steps * steps;
+                }             
         
-                avg /= steps * steps;
-            }             
-        
-            return float4(avg, 1.0);
+                return float4(avg, 1.0);
                
             }
             ENDCG
@@ -163,8 +166,7 @@
                 return o;
             }
 
-            
-
+        
             fixed4 frag (v2f i) : SV_Target
             {
                 //Combine _MainTex color and _BaseTex color

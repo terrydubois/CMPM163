@@ -1,14 +1,16 @@
-﻿Shader "Custom/ShadWater"
+﻿// following TOON-WATER SHADER TUTORIAL: https://roystan.net/articles/toon-water.html
+// this shader combines the toon-water shader (from the tutorial) and the reflect shader (from class)
+
+Shader "Custom/ShadWater"
 {
-    // TOON-WATER SHADER TUTORIAL: https://roystan.net/articles/toon-water.html
 
     Properties
     {
-        // for reflect shader
+        // skybox for reflect shader
         _Cube ("Cubemap", CUBE) = "" {}
 
 
-        // for toon-water shader
+        // variables for toon-water shader
         _DepthGradientShallow("Depth Gradient Shallow", Color)	 = (0.325, 0.807, 0.971, 0.725)
         _DepthGradientDeep("Depth Gradient Deep", Color) = (0.086, 0.407, 1, 0.749)
         _DepthMaxDistance("Depth Maximum Distance", Float) = 1
@@ -39,7 +41,7 @@
 
 			CGPROGRAM
 
-            #define SMOOTHSTEP_AA 0.01 // for smoothing the cutoff
+            #define SMOOTHSTEP_AA 0.01 // for smoothing the cutoff of noise sampling
 
             #pragma vertex vert
             #pragma fragment frag
@@ -80,8 +82,8 @@
                 // for toon-water shader
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.screenPosition = ComputeScreenPos(o.vertex);
-                o.noiseUV = TRANSFORM_TEX(v.uv, _SurfaceNoise);
-                o.distortUV = TRANSFORM_TEX(v.uv, _SurfaceDistortion);
+                o.noiseUV = TRANSFORM_TEX(v.uv, _SurfaceNoise); // get surface noise texture from image
+                o.distortUV = TRANSFORM_TEX(v.uv, _SurfaceDistortion); // get surface distortion texture from image
                 o.viewNormal = COMPUTE_VIEW_NORMAL;
 
 
@@ -94,7 +96,7 @@
 
 
 
-            // for toon-water shader
+            // variables for toon-water shader
             float4 _DepthGradientShallow;
             float4 _DepthGradientDeep;
 
@@ -110,9 +112,8 @@
             sampler2D _CameraNormalsTexture;
 
 
-            // for reflect shader
+            // variables for reflect shader
             samplerCUBE _Cube;
-
             float _WaterAlpha;
 
 
@@ -120,27 +121,27 @@
             {
 
                 // for toon-water shader
-                float existingDepth01 = tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.screenPosition)).r;
+                float existingDepth01 = tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.screenPosition)).r; // sample depth texture
                 float existingDepthLinear = LinearEyeDepth(existingDepth01);
 
-                float depthDifference = existingDepthLinear - i.screenPosition.w;
+                float depthDifference = existingDepthLinear - i.screenPosition.w; // depth of water surface, relative to screen position
 
                 float waterDepthDifference01 = saturate(depthDifference / _DepthMaxDistance);
-                float4 waterColor = lerp(_DepthGradientShallow, _DepthGradientDeep, waterDepthDifference01);
+                float4 waterColor = lerp(_DepthGradientShallow, _DepthGradientDeep, waterDepthDifference01); // make our water color blend as the water's depth changes
 
                 float3 existingNormal = tex2Dproj(_CameraNormalsTexture, UNITY_PROJ_COORD(i.screenPosition));
                 float3 normalDot = saturate(dot(existingNormal, i.viewNormal));
 
-                float foamDistance = lerp(_FoamMaxDistance, _FoamMinDistance, normalDot);
-                float foamDepthDifference01 = saturate(depthDifference / foamDistance);
-                float surfaceNoiseCutoff = foamDepthDifference01 * _SurfaceNoiseCutoff;
+                float foamDistance = lerp(_FoamMaxDistance, _FoamMinDistance, normalDot); 
+                float foamDepthDifference01 = saturate(depthDifference / foamDistance); // when dot product is larger, we use a lower foam threshold
+                float surfaceNoiseCutoff = foamDepthDifference01 * _SurfaceNoiseCutoff; // where we cutoff whether foam will be drawn for this sample on noise texture
 
-                float2 distortSample = (tex2D(_SurfaceDistortion, i.distortUV).xy * 2 - 1) * _SurfaceDistortionAmount;
+                float2 distortSample = (tex2D(_SurfaceDistortion, i.distortUV).xy * 2 - 1) * _SurfaceDistortionAmount; // distort foam from sampling distortion noise texture
 
                 float2 noiseUV = float2((i.noiseUV.x + _Time.y * _SurfaceNoiseScroll.x) + distortSample.x,
-                                        (i.noiseUV.y + _Time.y * _SurfaceNoiseScroll.y) + distortSample.y);
-                float surfaceNoiseSample = tex2D(_SurfaceNoise, noiseUV).r;
-                float surfaceNoise = smoothstep(_SurfaceNoiseCutoff - SMOOTHSTEP_AA, surfaceNoiseCutoff + SMOOTHSTEP_AA, surfaceNoiseSample); // smooth out cutoff at very end of toon-water shader
+                                        (i.noiseUV.y + _Time.y * _SurfaceNoiseScroll.y) + distortSample.y); // scroll noise surface to "animate" foam
+                float surfaceNoiseSample = tex2D(_SurfaceNoise, noiseUV).r; // get current sample of noise texture to see if we apply foam
+                float surfaceNoise = smoothstep(_SurfaceNoiseCutoff - SMOOTHSTEP_AA, surfaceNoiseCutoff + SMOOTHSTEP_AA, surfaceNoiseSample); // smooth out cutoff at very end of toon-water shader, to make foam smoother
 
 
 
@@ -154,7 +155,6 @@
                 // reflect that ray around the normal using built-in HLSL command
                 float3 vReflect = reflect( vIncident, i.normalInWorldCoords );
                 
-                
                 // use the reflect ray to sample the skybox
                 float4 reflectColor = texCUBE( _Cube, vReflect );
                 
@@ -163,7 +163,7 @@
                 
                 float3 vRefractRed = refract( vIncident, i.normalInWorldCoords, 0.1 );
                 float3 vRefractGreen = refract( vIncident, i.normalInWorldCoords, 0.1 );
-                float3 vRefractBlue = refract( vIncident, i.normalInWorldCoords, 0.7 );
+                float3 vRefractBlue = refract( vIncident, i.normalInWorldCoords, 0.7 ); // have most alpha for blue channel, to give water a blue tint
                 
                 float4 refractColorRed = texCUBE( _Cube, float3( vRefractRed ) );
                 float4 refractColorGreen = texCUBE( _Cube, float3( vRefractGreen ) );
@@ -175,7 +175,7 @@
                 // and then lerp them, so we get some of both
                 float4 reflectFinal = float4(lerp(reflectColor, refractColor, 0.5).rgb, 1.0);
                 float4 toonFinal = waterColor + surfaceNoise;
-                return float4(lerp(reflectFinal, toonFinal, 0.4).rgb, _WaterAlpha);
+                return float4(lerp(reflectFinal, toonFinal, 0.4).rgb, _WaterAlpha); // set alpha to _WaterAlpha for this pixel
 
             }
             ENDCG

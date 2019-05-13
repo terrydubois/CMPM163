@@ -2,21 +2,20 @@
 {
     Properties
     {
-        _Outline("Outline", Float) = 0
-        _OutlineColor("OutlineColor", Vector) = (0, 0.5, 1, 1)
-
-
+        _Outline("Outline", Float) = 0 // Distance of outline
+        _OutlineColor("OutlineColor", Vector) = (0, 0.5, 1, 1) // Color of outline
 
 
         _Color ("Color", Color) = (1, 1, 1, 1) //The color of our object
         _EmmisiveColor("Emmisive Color", Color) = (1, 1, 1, 1)
-        _Emissiveness("Emmissiveness", Range(0,10)) = 0
+        _Emissiveness("Emmissiveness", Range(0, 10)) = 0
         _Shininess ("Shininess", Float) = 10 //Shininess
         _SpecColor ("Specular Color", Color) = (1, 1, 1, 1) //Specular highlights color
         _MainTex ("Texture", 2D) = "white" {}
     }
     SubShader
     {
+        // first pass is for outline shader
         Pass
         {
             Cull front
@@ -61,13 +60,14 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 float4 c = tex2D(_MainTex, i.uv);
-                return _OutlineColor;//float4(0, 0.5, 1, 1); // RGBA color of outline
+                return _OutlineColor; // RGBA color of outline
             }
             
 
             ENDCG
         }
 
+        // second pass is for fill shader
         Pass
         {
             CGPROGRAM
@@ -117,12 +117,7 @@
 
 
 
-
-
-
-
-
-
+        // final pass is classic phong shader from assignment 1
         Pass {
             Tags { "LightMode" = "ForwardAdd" } //Important! In Unity, point lights are calculated in the the ForwardAdd pass
             Blend One One //Turn on additive blending if you have more than one point light
@@ -167,8 +162,6 @@
                 o.normal = v.normal; //Normal 
                 o.uv = v.uv;
                 o.vertex = UnityObjectToClipPos(v.vertex); 
-                
-              
 
                 return o;
            }
@@ -184,19 +177,16 @@
                 
                 float3 Kd = _Color.rgb; //Color of object
                 float3 Ka = UNITY_LIGHTMODEL_AMBIENT.rgb; //Ambient light
-                //float3 Ka = float3(0,0,0); //UNITY_LIGHTMODEL_AMBIENT.rgb; //Ambient light
                 float3 Ks = _SpecColor.rgb; //Color of specular highlighting
                 float3 Kl = _LightColor0.rgb; //Color of light
                 
                 
                 //AMBIENT LIGHT 
                 float3 ambient = Ka;
-                
                
                 //DIFFUSE LIGHT
                 float diffuseVal = max(dot(N, L), 0);
                 float3 diffuse = Kd * Kl * diffuseVal;
-                
                 
                 //SPECULAR LIGHT
                 float specularVal = pow(max(dot(N,H), 0), _Shininess);
@@ -207,8 +197,7 @@
                 
                 float3 specular = Ks * Kl * specularVal;
                 
-                float4 texColor = tex2D(_MainTex, i.uv);
-                //FINAL COLOR OF FRAGMENT
+                float4 texColor = tex2D(_MainTex, i.uv); //FINAL COLOR OF FRAGMENT
               
                 return float4(_EmmisiveColor * _Emissiveness + ambient+ diffuse + specular, 1.0)*texColor;
  
