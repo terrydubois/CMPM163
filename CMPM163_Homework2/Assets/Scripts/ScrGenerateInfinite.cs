@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+// define simple class for terrain tiles
 class Tile {
     public GameObject tile;
     public float createTime;
@@ -19,8 +20,8 @@ class Tile {
 
 public class ScrGenerateInfinite : MonoBehaviour
 {
-    public GameObject plane;
-    public GameObject player;
+    public GameObject plane; // the prefab of the plane tile we will generate
+    public GameObject player; // the object of the player to generate terrain around (the Main camera in our case)
 
     public int planeSize = 12;
     public int halfTilesX = 20;
@@ -33,6 +34,7 @@ public class ScrGenerateInfinite : MonoBehaviour
 
     void Start()
     {
+        // create grip map of tiles that will blend to make our terrain
         this.gameObject.transform.position = Vector3.zero;
         startPos = Vector3.zero;
 
@@ -56,6 +58,10 @@ public class ScrGenerateInfinite : MonoBehaviour
 
     void Update()
     {
+        // as our camera moves, we generate surrounding terrain along with it
+        // this creates an infinite terrain effect, as it will generate
+        // ground below wherever the camera is
+
         int xMove = (int)(player.transform.position.x - startPos.x);
         int zMove = (int)(player.transform.position.z - startPos.z);
 
@@ -84,6 +90,7 @@ public class ScrGenerateInfinite : MonoBehaviour
                 }
             }
 
+            // add these terrain tiles to a hashtable
             Hashtable newTerrain = new Hashtable();
             foreach(Tile tiles_ in tiles.Values) {
                 if (tiles_.createTime == updateTime) {

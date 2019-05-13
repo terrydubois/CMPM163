@@ -1,10 +1,10 @@
-﻿Shader "Custom/ShadXRayReplace"
+﻿// following tutorial: https://www.youtube.com/watch?v=OJkGGuudm38
+
+Shader "Custom/ShadXRayReplace"
 {
     Properties
     {
-        _Color("Main Color", Color) = (1, 1, 1, 1)
-        _EdgeColor("XRay Edge Color", Color) = (0, 0, 0, 0)
-        _MainTex("Base (RGB)", 2D) = "white" {}
+        _EdgeColor("XRay Edge Color", Color) = (0, 0, 0, 1) // color of x-ray outline
     }
 
     SubShader
@@ -15,28 +15,24 @@
             "RenderType" = "Opaque"
             "XRay" = "ColoredOutline"
         }
-        LOD 200
+        LOD 200 // level of detail
 
         CGPROGRAM
-        #pragma surface surf Lambert
+        #pragma surface surf Lambert // built-in Unity lighting
 
-        sampler2D _MainTex;
-        fixed4 _Color;
+        sampler2D _MainTex; // need to input texture, does not matter what texture is
+        
 
         struct Input
         {
             float2 uv_MainTex;
         };
 
-        void surf(Input IN, inout SurfaceOutput o)
+        void surf(Input IN, inout SurfaceOutput o) // need framework for surface shader
         {
-            fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
-            o.Albedo = c.rgb;
-            o.Alpha = c.a;
         }
+        
         ENDCG
-
     }
-
     Fallback "Diffuse"
 }

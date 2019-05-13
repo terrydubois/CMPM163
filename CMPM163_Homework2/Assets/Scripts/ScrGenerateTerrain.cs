@@ -8,12 +8,15 @@ using UnityEngine;
 
 public class ScrGenerateTerrain : MonoBehaviour
 {
-
-    public int heightScale = 10;
-    public float detailScale = 20.0f;
+    public int heightScale = 10; // maximum height of this terrain tile
+    public float detailScale = 20.0f; // how much variation in height for this tile
 
     void Start()
     {
+        // define vertices of individual tile meshes
+        // these tiles have their heights (their y vertex) produced
+        // from a PerlinNoise function, meaning that they have hills that
+        // will blend together seamlessly
         Mesh mesh = this.GetComponent<MeshFilter>().mesh;
         Vector3[] verts = mesh.vertices;
         for (int i = 0; i < verts.Length; i++) {
