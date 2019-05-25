@@ -7,6 +7,9 @@ using UnityEngine;
 public class ScrAudioReact : MonoBehaviour
 {
     public Light lt;
+	public float threshold = 0;
+	public float lightIntensityFull = 0;
+	private float lightIntensityDest = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +51,22 @@ public class ScrAudioReact : MonoBehaviour
 
 		// Map the magnitude to the cubes based on the cube name.
         //transform.localScale = new Vector3 (aveMag[0], aveMag[0], aveMag[0]);
-        lt.intensity = aveMag[0];
+
+		float mag = aveMag[0];
+
+		if (mag > threshold) {
+			lightIntensityDest = lightIntensityFull;
+		}
+		else {
+			lightIntensityDest = 0;
+		}
+
+		if (lt.intensity < lightIntensityDest) {
+			lt.intensity += Mathf.Abs(lt.intensity - lightIntensityDest) / 12;
+		}
+		else if (lt.intensity > lightIntensityDest) {
+			lt.intensity -= Mathf.Abs(lt.intensity - lightIntensityDest) / 12;
+		}
 
 
 		// --------- End animating cube via spectral data
