@@ -1,4 +1,4 @@
-﻿// Credit for this script to Brian Hansens
+﻿// Credit to Brian Hansen for first part of this script
 
 using System.Collections;
 using System.Collections.Generic;
@@ -11,19 +11,13 @@ public class ScrAudioReact : MonoBehaviour
 	public float lightIntensityFull = 0;
 	private float lightIntensityDest = 0;
 
-    // Start is called before the first frame update
     void Start()
     {
         lt = GetComponent<Light>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // --------------------------------------------------------
-		// ------- animate the cube size based on spectrum data.
-
-		// consolidate spectral data to 8 partitions (1 partition for each rotating cube)
 		int numPartitions = 8;
 		float[] aveMag = new float[numPartitions];
 		float partitionIndx = 0;
@@ -51,9 +45,11 @@ public class ScrAudioReact : MonoBehaviour
 
 		// Map the magnitude to the cubes based on the cube name.
         //transform.localScale = new Vector3 (aveMag[0], aveMag[0], aveMag[0]);
-
 		float mag = aveMag[0];
 
+
+		// if magnitude is above threshold, light will try to reach maximum intensity
+		// otherwise light will go for 0 intensity
 		if (mag > threshold) {
 			lightIntensityDest = lightIntensityFull;
 		}
@@ -61,16 +57,12 @@ public class ScrAudioReact : MonoBehaviour
 			lightIntensityDest = 0;
 		}
 
+		// have the intensity reach its destination smoothly
 		if (lt.intensity < lightIntensityDest) {
 			lt.intensity += Mathf.Abs(lt.intensity - lightIntensityDest) / 12;
 		}
 		else if (lt.intensity > lightIntensityDest) {
 			lt.intensity -= Mathf.Abs(lt.intensity - lightIntensityDest) / 12;
 		}
-
-
-		// --------- End animating cube via spectral data
-		// --------------------------------------------------------
-
     }
 }

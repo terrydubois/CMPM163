@@ -5,7 +5,15 @@
 
 Shader "Custom/ShadNoise"
 {
+    Properties
+    {
+       _NoiseO("Noise O", Float) = 0.0
+        _NoiseS("Noise S", Float) = 1.0
+        _NoiseW("Noise W", Float) = 0.5
+    }
+
     CGINCLUDE
+
 
     #pragma multi_compile CNOISE PNOISE SNOISE SNOISE_AGRAD SNOISE_NGRAD
     #pragma multi_compile _ THREED
@@ -22,14 +30,18 @@ Shader "Custom/ShadNoise"
         return o;
     }
 
+    float _NoiseO;
+    float _NoiseS;
+    float _NoiseW;
+
     float4 frag(v2f_img i) : SV_Target
     {
         const float epsilon = 0.0001;
 
         float2 uv = i.uv * 10.0 + float2(0.5, 1) * _Time.y;
-        float o = 0;
-        float s = 1.0;
-        float w = 0.5;
+        float o = _NoiseO;
+        float s = _NoiseS;
+        float w = _NoiseW;
 
 
         #ifdef FRACTAL
@@ -68,4 +80,5 @@ Shader "Custom/ShadNoise"
             ENDCG
         }
     }
+
 }

@@ -7,11 +7,7 @@ using UnityEngine;
 public class ScrNoise : MonoBehaviour
 {
     public enum NoiseType {
-    ClassicPerlin,
-    PeriodicPerlin,
-    Simplex,
-    SimplexNumericalGrad,
-    SimplexAnalyticalGrad
+    ClassicPerlin
     }
 
     [SerializeField]
@@ -28,9 +24,13 @@ public class ScrNoise : MonoBehaviour
 
     Material _material;
 
+    public float noiseO = 0.0f;
+    public float noiseS = 1.0f;
+    public float noiseW = 0.5f;
 
     void Update()
     {
+        // set noise (clouds) variables
         if (_material == null)
         {
             _material = new Material(shader);
@@ -41,10 +41,18 @@ public class ScrNoise : MonoBehaviour
         _material.shaderKeywords = null;
         _material.EnableKeyword("CNOISE");
 
-        if (_is3D)
+        if (_is3D) {
             _material.EnableKeyword("THREED");
+        }
 
-        if (_isFractal)
+        if (_isFractal) {
             _material.EnableKeyword("FRACTAL");
+        }
+
+        // set player-adjustable variables for clouds
+        _material.SetFloat("_NoiseO", noiseO);
+        _material.SetFloat("_NoiseS", noiseS);
+        _material.SetFloat("_NoiseW", noiseW);
     }
+
 }
