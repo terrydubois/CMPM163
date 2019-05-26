@@ -39,17 +39,7 @@ public class ScrNoise : MonoBehaviour
         }
 
         _material.shaderKeywords = null;
-
-        if (_noiseType == NoiseType.ClassicPerlin)
-            _material.EnableKeyword("CNOISE");
-        else if (_noiseType == NoiseType.PeriodicPerlin)
-            _material.EnableKeyword("PNOISE");
-        else if (_noiseType == NoiseType.Simplex)
-            _material.EnableKeyword("SNOISE");
-        else if (_noiseType == NoiseType.SimplexNumericalGrad)
-            _material.EnableKeyword("SNOISE_NGRAD");
-        else // SimplexAnalyticalGrad
-            _material.EnableKeyword("SNOISE_AGRAD");
+        _material.EnableKeyword("CNOISE");
 
         if (_is3D)
             _material.EnableKeyword("THREED");
